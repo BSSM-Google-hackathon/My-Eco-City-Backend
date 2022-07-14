@@ -3,6 +3,8 @@ import { AppService } from './app.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from './utils/file-uploading.utils';
 import { diskStorage } from 'multer';
+const testFolder = './files';
+var fs = require("fs");
 
 @Controller()
 export class AppController {
@@ -29,5 +31,14 @@ export class AppController {
   @Get(':imgpath')
   seeUploadedFile(@Param('imgpath') image, @Res() res) {
     return res.sendFile(image, { root: './files' });
+  }
+
+  @Get('seeallfile/see')
+  seeAllfile() {
+    let fileDTO = [];
+    fs.readdirSync(testFolder).forEach(file=> {
+      fileDTO.push(file);
+    });
+    return fileDTO;
   }
 }
